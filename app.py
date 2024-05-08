@@ -5,10 +5,11 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import pickle
+import os
 
 # Function to load data
 def load_data():
-    data = pd.read_csv('/heart.csv')
+    data = pd.read_csv('heart.csv')  # Ensure the correct path to your CSV file
     return data
 
 # Function to save the model
@@ -18,7 +19,7 @@ def save_model(model):
 
 # Function to train the model
 def train_model(data):
-    X = data.drop('target', axis=1)  # assuming 'target' is the label column
+    X = data.drop('target', axis=1)  # Assuming 'target' is the label column
     y = data['target']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     model = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -26,9 +27,9 @@ def train_model(data):
     return model
 
 # Check if the model file exists and load or train model
-try:
+if os.path.exists('trained_model.pkl'):
     model = pickle.load(open('trained_model.pkl', 'rb'))
-except (FileNotFoundError, IOError):
+else:
     data = load_data()
     model = train_model(data)
     save_model(model)
