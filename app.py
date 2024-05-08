@@ -23,7 +23,7 @@ def set_bg_img(url):
     )
 
 # Use this function at the top of your main Streamlit script
-set_bg_img("https://your-image-url.jpg")  # Replace with your actual image URL
+set_bg_img("https://github.com/Wahyunursahid/heart-disease-prediction-app/blob/main/gambarjantung.webp")  # Replace with your actual image URL
 
 # Function to load data
 def load_data():
