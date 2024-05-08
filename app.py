@@ -1,24 +1,48 @@
-pip install scikit-learn
+# Import necessary libraries
 import streamlit as st
 import pandas as pd
 import numpy as np
+from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import pickle
 
-# Load your trained model (make sure to save it locally first using pickle)
-model = pickle.load(open('/heart.csv', 'rb'))
+# Function to load data
+def load_data():
+    data = pd.read_csv('heart.csv')
+    return data
 
-# Title of your application
+# Function to save the model
+def save_model(model):
+    with open('trained_model.pkl', 'wb') as file:
+        pickle.dump(model, file)
+
+# Function to train the model
+def train_model(data):
+    X = data.drop('target', axis=1)  # assuming 'target' is the label column
+    y = data['target']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X_train, y_train)
+    return model
+
+# Check if the model file exists and load or train model
+try:
+    model = pickle.load(open('trained_model.pkl', 'rb'))
+except (FileNotFoundError, IOError):
+    data = load_data()
+    model = train_model(data)
+    save_model(model)
+
+# Streamlit application
 st.title('Heart Disease Prediction Application')
 
-# Collecting user input features into dataframe
 with st.form("my_form"):
     st.write("Enter the following details to predict heart disease:")
     age = st.number_input('Age', min_value=1, max_value=120, value=30)
     sex = st.selectbox('Sex', options=[0, 1], format_func=lambda x: 'Female' if x == 0 else 'Male')
     cp = st.selectbox('Chest Pain Type', options=[0, 1, 2, 3])
     trestbps = st.number_input('Resting Blood Pressure (in mm Hg)', value=120)
-    chol = st.number_input('Serum Cholestrol in mg/dl', value=200)
+    chol = st.number_input('Serum Cholesterol in mg/dl', value=200)
     fbs = st.selectbox('Fasting Blood Sugar > 120 mg/dl', options=[0, 1])
     restecg = st.selectbox('Resting Electrocardiographic Results', options=[0, 1, 2])
     thalach = st.number_input('Maximum Heart Rate Achieved', value=120)
@@ -28,12 +52,10 @@ with st.form("my_form"):
     ca = st.selectbox('Number of Major Vessels (0-3) Colored by Fluoroscopy', options=[0, 1, 2, 3])
     thal = st.selectbox('Thalassemia', options=[1, 2, 3])
 
-    # Every form must have a submit button.
     submitted = st.form_submit_button("Submit")
     if submitted:
         input_data = np.array([age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]).reshape(1, -1)
         prediction = model.predict(input_data)
         st.write("The predicted probability of heart disease is:", "Yes" if prediction[0] == 1 else "No")
 
-# Optional: Add some explanations about the input fields or the method
 st.write("Please fill out the information accurately to predict heart disease.")
