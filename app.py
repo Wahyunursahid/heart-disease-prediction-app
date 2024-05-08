@@ -7,6 +7,24 @@ from sklearn.ensemble import RandomForestClassifier
 import pickle
 import os
 
+# Function to apply custom CSS for background image
+def set_bg_img(url):
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("{url}");
+            background-size: cover;
+            background-position: center;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+# Use this function at the top of your main Streamlit script
+set_bg_img("https://your-image-url.jpg")  # Replace with your actual image URL
+
 # Function to load data
 def load_data():
     data = pd.read_csv('heart.csv')  # Ensure the correct path to your CSV file
