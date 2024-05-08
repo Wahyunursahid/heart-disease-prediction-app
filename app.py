@@ -35,16 +35,16 @@ else:
     save_model(model)
 
 # Streamlit application
-st.title('Heart Disease Prediction Application')
+st.title('Program Deteksi Dini Penyakit Jantung')
 
 with st.form("my_form"):
-    st.write("Enter the following details to predict heart disease:")
-    age = st.number_input('Age', min_value=1, max_value=120, value=30)
-    sex = st.selectbox('Sex', options=[0, 1], format_func=lambda x: 'Female' if x == 0 else 'Male')
+    st.write("Masukan Beberapa Gejala-Gejala Umum Pada Prediksi Penyakit Jantung:")
+    age = st.number_input('Umur', min_value=1, max_value=120, value=30)
+    sex = st.selectbox('Gender', options=[0, 1], format_func=lambda x: 'Female' if x == 0 else 'Male')
     cp = st.selectbox('Chest Pain Type', options=[0, 1, 2, 3])
-    trestbps = st.number_input('Resting Blood Pressure (in mm Hg)', value=120)
-    chol = st.number_input('Serum Cholesterol in mg/dl', value=200)
-    fbs = st.selectbox('Fasting Blood Sugar > 120 mg/dl', options=[0, 1])
+    trestbps = st.number_input('Tekanan Darah (in mm Hg)', value=120)
+    chol = st.number_input('Kolesterol in mg/dl', value=200)
+    fbs = st.selectbox('Gula Darah > 120 mg/dl', options=[0, 1])
     restecg = st.selectbox('Resting Electrocardiographic Results', options=[0, 1, 2])
     thalach = st.number_input('Maximum Heart Rate Achieved', value=120)
     exang = st.selectbox('Exercise Induced Angina', options=[0, 1])
@@ -57,6 +57,6 @@ with st.form("my_form"):
     if submitted:
         input_data = np.array([age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]).reshape(1, -1)
         prediction = model.predict(input_data)
-        st.write("The predicted probability of heart disease is:", "Yes" if prediction[0] == 1 else "No")
+        st.write("Kemungkinan Anda Menderita Gejala Penyakit Jantung :", "Yes" if prediction[0] == 1 else "No")
 
 st.write("Please fill out the information accurately to predict heart disease.")
