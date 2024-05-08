@@ -8,7 +8,7 @@ import pickle
 
 # Function to load data
 def load_data():
-    data = pd.read_csv('heart.csv')
+    data = pd.read_csv('/heart.csv')
     return data
 
 # Function to save the model
