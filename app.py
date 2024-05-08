@@ -59,4 +59,4 @@ with st.form("my_form"):
         prediction = model.predict(input_data)
         st.write("Kemungkinan Anda Menderita Gejala Penyakit Jantung :", "Yes" if prediction[0] == 1 else "No")
 
-st.write("Please fill out the information accurately to predict heart disease.")
+st.write("Mohon Diisi sesuai dengan fakta agar hasilnya akurat")
